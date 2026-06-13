@@ -1,5 +1,7 @@
 # World Cup 2026 Dashboard
 
+**[Live Site](https://keepitjibreel.github.io/worldcup-dashboard/)**
+
 A lightweight live dashboard tracking all 104 matches of the 2026 FIFA World Cup across the USA, Canada, and Mexico.
 
 
