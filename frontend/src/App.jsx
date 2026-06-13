@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
+const BASE = import.meta.env.BASE_URL;
 
 const C = {
   bg:         "#FAFAFA",
@@ -484,9 +485,9 @@ export default function App() {
 
   const loadData = useCallback(() => {
     Promise.all([
-      fetch("/matches.json").then(r => r.json()),
-      fetch("/standings.json").then(r => r.json()),
-      fetch("/predictions.json").then(r => r.json()).catch(() => []),
+      fetch(`${BASE}matches.json`).then(r => r.json()),
+      fetch(`${BASE}standings.json`).then(r => r.json()),
+      fetch(`${BASE}predictions.json`).then(r => r.json()).catch(() => []),
     ]).then(([matches, stand, preds]) => {
       setFixtures(matches);
       setStandings(stand);
