@@ -11,12 +11,17 @@ jobs:
 
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: '3.12'
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
 
       - name: Install Python dependencies
         run: pip install -r backend/requirements.txt
@@ -27,11 +32,6 @@ jobs:
           BASE_URL: ${{ secrets.BASE_URL }}
           JWT_TOKEN: ${{ secrets.JWT_TOKEN }}
         run: python pipeline.py
-
-      - name: Set up Node
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18'
 
       - name: Install frontend dependencies
         working-directory: frontend
