@@ -31,21 +31,33 @@ const C = {
 };
 
 const FLAG_EMOJI = {
-  "Mexico":"🇲🇽","South Africa":"🇿🇦","Czechia":"🇨🇿","Costa Rica":"🇨🇷",
+  "Mexico":"🇲🇽","South Africa":"🇿🇦","Czechia":"🇨🇿","Czech Republic":"🇨🇿","Costa Rica":"🇨🇷",
   "Switzerland":"🇨🇭","Canada":"🇨🇦","Qatar":"🇶🇦","Bosnia and Herzegovina":"🇧🇦",
-  "Brazil":"🇧🇷","Scotland":"🏴󠁧󠁢󠁳󠁣󠁴󠁿","Morocco":"🇲🇦","Haiti":"🇭🇹",
-  "USA":"🇺🇸","Australia":"🇦🇺","Paraguay":"🇵🇾","Türkiye":"🇹🇷",
-  "Germany":"🇩🇪","Côte d'Ivoire":"🇨🇮","Ecuador":"🇪🇨","Curaçao":"🇨🇼",
+  "Brazil":"🇧🇷","Scotland":"🏴","Morocco":"🇲🇦","Haiti":"🇭🇹",
+  "USA":"🇺🇸","United States":"🇺🇸","Australia":"🇦🇺","Paraguay":"🇵🇾",
+  "Türkiye":"🇹🇷","Turkey":"🇹🇷",
+  "Germany":"🇩🇪","Côte d'Ivoire":"🇨🇮","Ivory Coast":"🇨🇮","Ecuador":"🇪🇨","Curaçao":"🇨🇼",
   "Netherlands":"🇳🇱","Japan":"🇯🇵","Sweden":"🇸🇪","Tunisia":"🇹🇳",
   "Spain":"🇪🇸","Nigeria":"🇳🇬","Cameroon":"🇨🇲","Honduras":"🇭🇳",
-  "Portugal":"🇵🇹","DR Congo":"🇨🇩","Uzbekistan":"🇺🇿","Colombia":"🇨🇴",
+  "Portugal":"🇵🇹","DR Congo":"🇨🇩","Democratic Republic of the Congo":"🇨🇩",
+  "Congo DR":"🇨🇩","Uzbekistan":"🇺🇿","Colombia":"🇨🇴",
   "Argentina":"🇦🇷","Croatia":"🇭🇷","Saudi Arabia":"🇸🇦","Egypt":"🇪🇬",
   "France":"🇫🇷","Algeria":"🇩🇿","Senegal":"🇸🇳","Bolivia":"🇧🇴",
-  "Belgium":"🇧🇪","Uruguay":"🇺🇾","South Korea":"🇰🇷","Iran":"🇮🇷",
-  "England":"🏴󠁧󠁢󠁥󠁮󠁧󠁿","Ghana":"🇬🇭","Panama":"🇵🇦",
+  "Belgium":"🇧🇪","Uruguay":"🇺🇾","South Korea":"🇰🇷","Iran":"🇮🇷","IR Iran":"🇮🇷",
+  "England":"🏴","Ghana":"🇬🇭","Panama":"🇵🇦","Iraq":"🇮🇶",
   "Norway":"🇳🇴","Austria":"🇦🇹","Jordan":"🇯🇴","New Zealand":"🇳🇿",
   "Cape Verde":"🇨🇻",
 };
+
+const SHORT_NAME = {
+  "Democratic Republic of the Congo": "DR Congo",
+  "Bosnia and Herzegovina": "Bosnia & Herz.",
+  "Ivory Coast": "Côte d'Ivoire",
+};
+
+function teamName(name) {
+  return SHORT_NAME[name] || name;
+}
 
 const SERIF = "'Georgia', 'Times New Roman', serif";
 const SANS  = "'Inter', system-ui, sans-serif";
@@ -151,7 +163,7 @@ function MatchPopup({ match, onClose }) {
               <div style={{ fontSize:28 }}>{FLAG_EMOJI[match.home] || "🏳️"}</div>
               <div style={{ fontSize:14, color:C.text, marginTop:6,
                 fontWeight:600, fontFamily:SERIF,
-                wordBreak:"break-word", lineHeight:1.2 }}>{match.home}</div>
+                wordBreak:"break-word", lineHeight:1.2 }}>{teamName(match.home)}</div>
             </div>
 
             {/* score — fixed width so it never wraps */}
@@ -181,7 +193,7 @@ function MatchPopup({ match, onClose }) {
               <div style={{ fontSize:28 }}>{FLAG_EMOJI[match.away] || "🏳️"}</div>
               <div style={{ fontSize:14, color:C.text, marginTop:6,
                 fontWeight:600, fontFamily:SERIF,
-                wordBreak:"break-word", lineHeight:1.2 }}>{match.away}</div>
+                wordBreak:"break-word", lineHeight:1.2 }}>{teamName(match.away)}</div>
             </div>
           </div>
         </div>
@@ -340,7 +352,7 @@ function MatchCard({ match, onClick }) {
             fontFamily:SERIF, lineHeight:1.25,
             overflow:"hidden", textOverflow:"ellipsis",
             display:"-webkit-box", WebkitLineClamp:2,
-            WebkitBoxOrient:"vertical" }}>{match.home}</div>
+            WebkitBoxOrient:"vertical" }}>{teamName(match.home)}</div>
         </div>
 
         <div style={{ textAlign:"center", flexShrink:0, minWidth:60 }}>
@@ -365,7 +377,7 @@ function MatchCard({ match, onClick }) {
             fontFamily:SERIF, lineHeight:1.25,
             overflow:"hidden", textOverflow:"ellipsis",
             display:"-webkit-box", WebkitLineClamp:2,
-            WebkitBoxOrient:"vertical" }}>{match.away}</div>
+            WebkitBoxOrient:"vertical" }}>{teamName(match.away)}</div>
         </div>
       </div>
 
