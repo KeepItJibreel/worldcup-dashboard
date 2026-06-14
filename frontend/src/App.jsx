@@ -514,15 +514,24 @@ export default function App() {
   }, {});
 
   const liveMatches     = fixtures.filter(f => !f.finished && f.time_elapsed > 0);
-  const doneMatches     = fixtures.filter(f => f.finished);
   const halftimeMatches = fixtures.filter(f =>
     !f.finished && f.time_elapsed === 0 && (f.home_score > 0 || f.away_score > 0));
-  const upcomingMatches = fixtures.filter(f =>
-    !f.finished && f.time_elapsed === 0 && f.home_score === 0 && f.away_score === 0);
+
+  const doneMatches = fixtures
+    .filter(f => f.finished)
+    .sort((a, b) => new Date(b.local_date) - new Date(a.local_date)); // most recent first
+
+  const upcomingMatches = fixtures
+    .filter(f => !f.finished && f.time_elapsed === 0 && f.home_score === 0 && f.away_score === 0)
+    .sort((a, b) => new Date(a.local_date) - new Date(b.local_date)); // soonest first
+
+  const sortedPredictions = [...predictions].sort(
+    (a, b) => new Date(a.date) - new Date(b.date)
+  );
 
   const filteredPreds = predGroup === "ALL"
-    ? predictions
-    : predictions.filter(p => p.group === predGroup);
+    ? sortedPredictions
+    : sortedPredictions.filter(p => p.group === predGroup);
 
   const tabs = ["matches", "groups", "predictions"];
 
