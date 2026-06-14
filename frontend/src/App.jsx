@@ -260,8 +260,15 @@ function GroupTable({ group, rows }) {
         background:C.usaBlue }}>
         <span style={{ fontFamily:SERIF, fontWeight:700, letterSpacing:1,
           color:"#FFFFFF", fontSize:14 }}>Group {group}</span>
-        <span style={{ fontSize:10, color:"rgba(255,255,255,0.55)",
-          letterSpacing:1, fontFamily:SANS }}>MP · W · D · L · GD · PTS</span>
+        <span style={{ fontFamily:"'Georgia', monospace", fontSize:10,
+          color:"rgba(255,255,255,0.55)", display:"flex", gap:12, flexShrink:0 }}>
+          <span style={{ width:16, textAlign:"center" }}>MP</span>
+          <span style={{ width:16, textAlign:"center" }}>W</span>
+          <span style={{ width:16, textAlign:"center" }}>D</span>
+          <span style={{ width:16, textAlign:"center" }}>L</span>
+          <span style={{ width:24, textAlign:"center" }}>GD</span>
+          <span style={{ width:24, textAlign:"right" }}>PTS</span>
+        </span>
       </div>
       {rows.map((r, i) => (
         <div key={r.team} style={{ display:"flex", alignItems:"center",
@@ -457,16 +464,16 @@ function PredictionCard({ pred }) {
               display:"flex", marginBottom:6 }}>
               <div style={{ width:`${homeW}%`, background:C.usaBlue,
                 transition:"width 0.6s ease" }} />
-              <div style={{ width:`${awayW}%`,
-                background: favour === "away" ? C.usaRed : C.border }} />
+              <div style={{ width:`${awayW}%`, background:C.usaRed,
+                transition:"width 0.6s ease" }} />
             </div>
             <div style={{ display:"flex", justifyContent:"space-between",
               fontSize:12, fontFamily:SANS }}>
-              <span style={{ fontWeight:700,
-                color: favour === "home" ? C.usaBlue : C.muted }}>{homeW}%</span>
+              <span style={{ fontWeight: favour === "home" ? 700 : 400,
+                color:C.usaBlue }}>{homeW}%</span>
               <span style={{ color:C.muted, fontSize:10 }}>win probability</span>
-              <span style={{ fontWeight:700,
-                color: favour === "away" ? C.usaRed : C.muted }}>{awayW}%</span>
+              <span style={{ fontWeight: favour === "away" ? 700 : 400,
+                color:C.usaRed }}>{awayW}%</span>
             </div>
             {favour !== "even" && (
               <div style={{ textAlign:"center", fontSize:11,
