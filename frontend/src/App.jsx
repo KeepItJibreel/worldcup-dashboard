@@ -491,6 +491,127 @@ function PredictionCard({ pred }) {
   );
 }
 
+function MatchesTab({ liveMatches, halftimeMatches, doneMatches, upcomingMatches, setSelectedMatch }) {
+  const [showAllResults, setShowAllResults] = useState(false);
+  const PREVIEW = 3;
+  const hasMore = doneMatches.length > PREVIEW;
+  const visibleDone = showAllResults ? doneMatches : doneMatches.slice(0, PREVIEW);
+
+  return (
+    <div>
+      {/* LIVE */}
+      {liveMatches.length > 0 && (
+        <section style={{ marginBottom:32 }}>
+          <div style={{ display:"flex", alignItems:"center", gap:8, marginBottom:12 }}>
+            <LiveBadge />
+            <span style={{ fontSize:12, fontWeight:700, color:C.live,
+              letterSpacing:1.5, fontFamily:SANS }}>IN PROGRESS</span>
+          </div>
+          <div style={{ display:"grid",
+            gridTemplateColumns:"repeat(auto-fill,minmax(240px,1fr))", gap:12 }}>
+            {liveMatches.map((m, i) => (
+              <MatchCard key={i} match={m} onClick={() => setSelectedMatch(m)} />
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* HALF TIME */}
+      {halftimeMatches.length > 0 && (
+        <section style={{ marginBottom:32 }}>
+          <div style={{ fontSize:11, fontWeight:700, color:C.draw,
+            letterSpacing:1.5, marginBottom:12, fontFamily:SANS }}>
+            HALF TIME
+          </div>
+          <div style={{ display:"grid",
+            gridTemplateColumns:"repeat(auto-fill,minmax(240px,1fr))", gap:12 }}>
+            {halftimeMatches.map((m, i) => (
+              <MatchCard key={i} match={m} onClick={() => setSelectedMatch(m)} />
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* RESULTS — collapsed by default */}
+      {doneMatches.length > 0 && (
+        <section style={{ marginBottom:32 }}>
+          <div style={{ fontSize:11, fontWeight:700, color:C.muted,
+            letterSpacing:1.5, marginBottom:12, fontFamily:SANS }}>
+            RESULTS
+          </div>
+
+          {/* grid with fade overlay when collapsed */}
+          <div style={{ position:"relative" }}>
+            <div style={{ display:"grid",
+              gridTemplateColumns:"repeat(auto-fill,minmax(240px,1fr))", gap:12 }}>
+              {visibleDone.map((m, i) => (
+                <MatchCard key={i} match={m} onClick={() => setSelectedMatch(m)} />
+              ))}
+            </div>
+
+            {/* fade-out overlay — only shown when collapsed and there are hidden matches */}
+            {!showAllResults && hasMore && (
+              <div style={{
+                position:"absolute", bottom:0, left:0, right:0, height:100,
+                background:"linear-gradient(to bottom, transparent, #FAFAFA)",
+                pointerEvents:"none"
+              }} />
+            )}
+          </div>
+
+          {/* expand/collapse button */}
+          {hasMore && (
+            <div style={{ textAlign:"center", marginTop: showAllResults ? 16 : 4 }}>
+              <button
+                onClick={() => setShowAllResults(v => !v)}
+                style={{
+                  background:"none",
+                  border:`1.5px solid ${C.border}`,
+                  borderRadius:6,
+                  padding:"7px 20px",
+                  fontSize:12,
+                  fontFamily:SANS,
+                  fontWeight:600,
+                  color:C.textSub,
+                  cursor:"pointer",
+                  transition:"border-color 0.15s, color 0.15s",
+                }}
+                onMouseEnter={e => {
+                  e.currentTarget.style.borderColor = C.usaBlue;
+                  e.currentTarget.style.color = C.usaBlue;
+                }}
+                onMouseLeave={e => {
+                  e.currentTarget.style.borderColor = C.border;
+                  e.currentTarget.style.color = C.textSub;
+                }}
+              >
+                {showAllResults
+                  ? `▲ Show fewer results`
+                  : `▼ Show all ${doneMatches.length} results`}
+              </button>
+            </div>
+          )}
+        </section>
+      )}
+
+      {/* UPCOMING */}
+      {upcomingMatches.length > 0 && (
+        <section>
+          <div style={{ fontSize:11, fontWeight:700, color:C.muted,
+            letterSpacing:1.5, marginBottom:12, fontFamily:SANS }}>
+            UPCOMING
+          </div>
+          <div style={{ display:"grid",
+            gridTemplateColumns:"repeat(auto-fill,minmax(240px,1fr))", gap:12 }}>
+            {upcomingMatches.map((m, i) => (
+              <MatchCard key={i} match={m} onClick={() => setSelectedMatch(m)} />
+            ))}
+          </div>
+        </section>
+      )}
+    </div>
+  );
+}
 
 export default function App() {
   const [tab, setTab]                   = useState("matches");
@@ -638,73 +759,13 @@ export default function App() {
 
         {/* MATCHES */}
         {tab === "matches" && (
-          <div>
-            {liveMatches.length > 0 && (
-              <section style={{ marginBottom:32 }}>
-                <div style={{ display:"flex", alignItems:"center", gap:8,
-                  marginBottom:12 }}>
-                  <LiveBadge />
-                  <span style={{ fontSize:12, fontWeight:700, color:C.live,
-                    letterSpacing:1.5, fontFamily:SANS }}>IN PROGRESS</span>
-                </div>
-                <div style={{ display:"grid",
-                  gridTemplateColumns:"repeat(auto-fill,minmax(240px,1fr))",
-                  gap:12 }}>
-                  {liveMatches.map((m, i) => (
-                    <MatchCard key={i} match={m} onClick={() => setSelectedMatch(m)} />
-                  ))}
-                </div>
-              </section>
-            )}
-
-            {halftimeMatches.length > 0 && (
-              <section style={{ marginBottom:32 }}>
-                <div style={{ fontSize:11, fontWeight:700, color:C.draw,
-                  letterSpacing:1.5, marginBottom:12, fontFamily:SANS }}>
-                  HALF TIME
-                </div>
-                <div style={{ display:"grid",
-                  gridTemplateColumns:"repeat(auto-fill,minmax(240px,1fr))",
-                  gap:12 }}>
-                  {halftimeMatches.map((m, i) => (
-                    <MatchCard key={i} match={m} onClick={() => setSelectedMatch(m)} />
-                  ))}
-                </div>
-              </section>
-            )}
-
-            {doneMatches.length > 0 && (
-              <section style={{ marginBottom:32 }}>
-                <div style={{ fontSize:11, fontWeight:700, color:C.muted,
-                  letterSpacing:1.5, marginBottom:12, fontFamily:SANS }}>
-                  RESULTS
-                </div>
-                <div style={{ display:"grid",
-                  gridTemplateColumns:"repeat(auto-fill,minmax(240px,1fr))",
-                  gap:12 }}>
-                  {doneMatches.map((m, i) => (
-                    <MatchCard key={i} match={m} onClick={() => setSelectedMatch(m)} />
-                  ))}
-                </div>
-              </section>
-            )}
-
-            {upcomingMatches.length > 0 && (
-              <section>
-                <div style={{ fontSize:11, fontWeight:700, color:C.muted,
-                  letterSpacing:1.5, marginBottom:12, fontFamily:SANS }}>
-                  UPCOMING
-                </div>
-                <div style={{ display:"grid",
-                  gridTemplateColumns:"repeat(auto-fill,minmax(240px,1fr))",
-                  gap:12 }}>
-                  {upcomingMatches.map((m, i) => (
-                    <MatchCard key={i} match={m} onClick={() => setSelectedMatch(m)} />
-                  ))}
-                </div>
-              </section>
-            )}
-          </div>
+          <MatchesTab
+            liveMatches={liveMatches}
+            halftimeMatches={halftimeMatches}
+            doneMatches={doneMatches}
+            upcomingMatches={upcomingMatches}
+            setSelectedMatch={setSelectedMatch}
+          />
         )}
 
         {/* GROUPS */}
